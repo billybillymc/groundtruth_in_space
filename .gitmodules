@@ -1,0 +1,9 @@
+[submodule "adamant"]
+	path = adamant
+	url = https://github.com/lasp/adamant.git
+[submodule "cFS"]
+	path = cFS
+	url = https://github.com/nasa/cFS.git
+[submodule "cubedos"]
+	path = cubedos
+	url = https://github.com/cubesatlab/cubedos.git
