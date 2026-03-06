@@ -1,0 +1,153 @@
+dataset_name: "adamant-robustness"
+description: "Tests retrieval stability across paraphrased queries, typos, and varying specificity"
+version: "1.0"
+
+examples:
+  # ── Paraphrased versions of existing queries ──────────────────────────────
+  - id: "rob-001"
+    description: "Paraphrase: command router error handling (casual phrasing)"
+    inputs:
+      message: "What happens when the command router gets a command ID it doesn't recognize?"
+    reference_outputs:
+      contains_any:
+        - "Command_Id_Not_Registered"
+        - "not registered"
+        - "not found"
+        - "error"
+        - "event"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies error handling for unknown commands"
+          key: "error_handling"
+          keywords: ["Command_Id_Not_Registered", "event", "error", "reject", "unregistered", "not found"]
+          weight: 1.0
+    metadata:
+      category: "robustness"
+      priority: "p0"
+
+  - id: "rob-002"
+    description: "Paraphrase: CCSDS packetizer (vague phrasing)"
+    inputs:
+      message: "Tell me about the CCSDS packet creation process"
+    reference_outputs:
+      contains_any:
+        - "CCSDS"
+        - "header"
+        - "telemetry"
+        - "CRC"
+        - "packet"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Describes packet construction"
+          key: "construction"
+          keywords: ["header", "CRC", "crc", "checksum", "construct", "create", "telemetry"]
+          weight: 1.0
+    metadata:
+      category: "robustness"
+      priority: "p0"
+
+  - id: "rob-003"
+    description: "Paraphrase: event limiter rules (technical jargon)"
+    inputs:
+      message: "Describe the rate-limiting algorithm in the event limiter component"
+    reference_outputs:
+      contains_any:
+        - "limit"
+        - "counter"
+        - "persistence"
+        - "event"
+        - "block"
+        - "forward"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Explains the limiting mechanism"
+          key: "mechanism"
+          keywords: ["counter", "limit", "persistence", "threshold", "block", "forward", "enable", "disable"]
+          weight: 1.0
+    metadata:
+      category: "robustness"
+      priority: "p0"
+
+  # ── Typos and misspellings ────────────────────────────────────────────────
+  - id: "rob-004"
+    description: "Query with typo in component name"
+    inputs:
+      message: "How does the comand router dispatch comands?"
+    reference_outputs:
+      contains_any:
+        - "command"
+        - "router"
+        - "table"
+        - "dispatch"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Still retrieves command router information despite typos"
+          key: "retrieval"
+          keywords: ["command", "router", "table", "dispatch", "Command_Id"]
+          weight: 1.0
+    metadata:
+      category: "robustness"
+      priority: "p1"
+
+  - id: "rob-005"
+    description: "Query with typo in technical term"
+    inputs:
+      message: "What protcted types does the event packetzer use?"
+    reference_outputs:
+      contains_any:
+        - "Protected_Packet_Array"
+        - "protected"
+        - "mutual exclusion"
+        - "packetizer"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Retrieves event packetizer info despite typos"
+          key: "retrieval"
+          keywords: ["protected", "Protected_Packet_Array", "packetizer", "mutual exclusion", "concurrent"]
+          weight: 1.0
+    metadata:
+      category: "robustness"
+      priority: "p1"
+
+  # ── Varying specificity ───────────────────────────────────────────────────
+  - id: "rob-006"
+    description: "Very broad query about the system"
+    inputs:
+      message: "How does Adamant work?"
+    reference_outputs:
+      contains_any:
+        - "component"
+        - "connector"
+        - "Ada"
+        - "framework"
+        - "embedded"
+        - "Ravenscar"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Provides a meaningful high-level overview"
+          key: "overview"
+          keywords: ["component", "connector", "Ada", "framework", "embedded", "Ravenscar", "tasking"]
+          weight: 1.0
+    metadata:
+      category: "robustness"
+      priority: "p1"
+
+  - id: "rob-007"
+    description: "Highly specific query about a single file"
+    inputs:
+      message: "What procedures are defined in the command_router-implementation.adb file?"
+    reference_outputs:
+      contains_any:
+        - "Init"
+        - "Route_Command"
+        - "command router"
+        - "procedure"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Names specific procedures from the file"
+          key: "procedures"
+          keywords: ["Init", "Route", "procedure", "command"]
+          weight: 1.0
+    metadata:
+      category: "robustness"
+      priority: "p0"

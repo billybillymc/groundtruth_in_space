@@ -1,0 +1,148 @@
+dataset_name: "adamant-business-logic-extraction"
+description: "Validates the agent can extract core business rules from component implementations"
+version: "1.0"
+
+examples:
+  - id: "bl-001"
+    description: "Extracts event limiter blocking rules"
+    inputs:
+      message: "What are the rules for when the event limiter blocks vs forwards events?"
+    reference_outputs:
+      contains_any:
+        - "persistence"
+        - "limit"
+        - "counter"
+        - "forward"
+        - "block"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Describes the rate limiting rule"
+          key: "rate_limit_rule"
+          keywords: ["persistence", "limit", "count", "threshold", "tick", "number"]
+          weight: 0.4
+        - criterion: "Describes forwarding vs blocking behavior"
+          key: "forward_block"
+          keywords: ["forward", "block", "pass", "drop", "limit", "reject"]
+          weight: 0.3
+        - criterion: "Mentions per-event-ID tracking"
+          key: "per_event"
+          keywords: ["event id", "Event_Id", "individual", "each", "particular", "specific"]
+          weight: 0.3
+    metadata:
+      category: "business_logic_extraction"
+      priority: "p0"
+
+  - id: "bl-004"
+    description: "Extracts tick divider rate division logic"
+    inputs:
+      message: "How does the tick divider calculate when to emit subrate ticks?"
+    reference_outputs:
+      contains_any:
+        - "divisor"
+        - "counter"
+        - "modulo"
+        - "divide"
+        - "count"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Describes the divisor/counter mechanism"
+          key: "divisor_logic"
+          keywords: ["divisor", "counter", "count", "modulo", "divide", "tick"]
+          weight: 0.6
+        - criterion: "Explains when output ticks fire"
+          key: "output_trigger"
+          keywords: ["output", "send", "emit", "fire", "forward", "Tick_T_Send"]
+          weight: 0.4
+    metadata:
+      category: "business_logic_extraction"
+      priority: "p0"
+
+  - id: "bl-005"
+    description: "Extracts command sequencer execution rules"
+    inputs:
+      message: "What rules govern how the command sequencer steps through a sequence?"
+    reference_outputs:
+      contains_any:
+        - "sequence"
+        - "execute"
+        - "step"
+        - "command"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Describes the stepping/execution mechanism"
+          key: "stepping"
+          keywords: ["step", "execute", "interpret", "instruction", "tick", "advance"]
+          weight: 0.5
+        - criterion: "Mentions sequence loading or compiled format"
+          key: "format"
+          keywords: ["LASEL", "compiled", "load", "binary", "sequence", "engine"]
+          weight: 0.5
+    metadata:
+      category: "business_logic_extraction"
+      priority: "p1"
+
+  - id: "bl-002"
+    description: "Extracts command protector allow/reject logic"
+    inputs:
+      message: "How does the command protector decide whether to allow or reject a command?"
+    reference_outputs:
+      contains_any:
+        - "armed"
+        - "protected"
+        - "reject"
+        - "allow"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies the armed state requirement"
+          key: "armed_requirement"
+          keywords: ["armed", "disarmed", "arm", "state"]
+          weight: 0.4
+        - criterion: "Identifies the protected command concept"
+          key: "protected_commands"
+          keywords: ["protected command", "protected", "unprotected"]
+          weight: 0.3
+        - criterion: "Describes the decision outcome"
+          key: "decision_outcome"
+          keywords: ["reject", "allow", "block", "forward", "pass", "execute"]
+          weight: 0.3
+    metadata:
+      category: "business_logic_extraction"
+      priority: "p0"
+
+  - id: "bl-003"
+    description: "Extracts CCSDS packetizer CRC validation logic"
+    inputs:
+      message: "How does the CCSDS packetizer create telemetry packets?"
+    reference_outputs:
+      contains_any:
+        - "CRC"
+        - "crc"
+        - "checksum"
+        - "CCSDS"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Describes the packet construction process"
+          key: "packet_construction"
+          keywords: ["header", "secondary", "timestamp", "construct", "create", "convert"]
+          weight: 0.4
+        - criterion: "Identifies CRC/checksum appending"
+          key: "crc_append"
+          keywords: ["CRC", "crc", "checksum", "CRC-CCITT", "append", "integrity"]
+          weight: 0.4
+        - criterion: "Mentions Adamant to CCSDS conversion"
+          key: "conversion"
+          keywords: ["Adamant", "adamant", "CCSDS", "ccsds", "convert", "telemetry"]
+          weight: 0.2
+    metadata:
+      category: "business_logic_extraction"
+      priority: "p0"

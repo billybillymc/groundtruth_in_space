@@ -1,0 +1,135 @@
+dataset_name: "adamant-code-explanation"
+description: "Validates the agent can explain Ada code structures and their purpose"
+version: "1.0"
+
+examples:
+  - id: "ce-001"
+    description: "Explains Protected_Packet_Array in event packetizer"
+    inputs:
+      message: "What does the Protected_Packet_Array type do in the event packetizer?"
+    reference_outputs:
+      contains_any:
+        - "mutual exclusion"
+        - "protected"
+        - "concurrent"
+        - "thread"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Explains the protected type provides safe concurrent access"
+          key: "concurrency_purpose"
+          keywords: ["mutual exclusion", "protected", "concurrent"]
+          weight: 0.6
+        - criterion: "Mentions packet storage or array operations"
+          key: "packet_ops"
+          keywords: ["packet", "insert", "init", "array", "allocate"]
+          weight: 0.4
+    metadata:
+      category: "code_explanation"
+      priority: "p0"
+
+  - id: "ce-004"
+    description: "Explains the connector pattern in Adamant"
+    inputs:
+      message: "What is a connector in Adamant and how do components use connectors to communicate?"
+    reference_outputs:
+      contains_any:
+        - "connector"
+        - "send"
+        - "receive"
+        - "connect"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Explains the connector abstraction"
+          key: "connector_concept"
+          keywords: ["connector", "port", "interface", "send", "receive"]
+          weight: 0.5
+        - criterion: "Explains how components are wired together"
+          key: "wiring"
+          keywords: ["connect", "assembly", "wire", "link", "component"]
+          weight: 0.5
+    metadata:
+      category: "code_explanation"
+      priority: "p0"
+
+  - id: "ce-005"
+    description: "Explains the Ravenscar tasking profile usage"
+    inputs:
+      message: "How does Adamant use the Ravenscar profile for real-time tasking?"
+    reference_outputs:
+      contains_any:
+        - "Ravenscar"
+        - "ravenscar"
+        - "task"
+        - "real-time"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Explains what Ravenscar provides"
+          key: "ravenscar"
+          keywords: ["Ravenscar", "profile", "real-time", "deterministic", "restriction"]
+          weight: 0.5
+        - criterion: "Connects to Adamant's tasking model"
+          key: "tasking"
+          keywords: ["task", "priority", "periodic", "component", "schedule"]
+          weight: 0.5
+    metadata:
+      category: "code_explanation"
+      priority: "p1"
+
+  - id: "ce-002"
+    description: "Explains the Init procedure of the command router"
+    inputs:
+      message: "Explain the Init procedure of the command router component"
+    reference_outputs:
+      contains_any:
+        - "router table"
+        - "command"
+        - "initialize"
+        - "init"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Explains the router table initialization"
+          key: "table_init"
+          keywords: ["table", "router", "command"]
+          weight: 0.5
+        - criterion: "Mentions configuration parameters"
+          key: "config_params"
+          keywords: ["max", "number", "commands", "connector"]
+          weight: 0.5
+    metadata:
+      category: "code_explanation"
+      priority: "p0"
+
+  - id: "ce-003"
+    description: "Explains labeled queue push and pop operations"
+    inputs:
+      message: "What types of queues are available and what are the differences between them?"
+    reference_outputs:
+      contains_any:
+        - "Labeled_Queue"
+        - "labeled_queue"
+        - "Priority_Queue"
+        - "priority_queue"
+        - "Variable_Queue"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies at least two queue types"
+          key: "queue_types"
+          keywords: ["labeled", "priority", "variable", "queue"]
+          weight: 0.6
+        - criterion: "Explains differences between queue types"
+          key: "differences"
+          keywords: ["protected", "mutual exclusion", "priority", "order"]
+          weight: 0.4
+    metadata:
+      category: "code_explanation"
+      priority: "p0"

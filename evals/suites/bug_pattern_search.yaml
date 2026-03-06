@@ -1,0 +1,138 @@
+dataset_name: "adamant-bug-pattern-search"
+description: "Validates the agent can identify error handling and potential issues in code"
+version: "1.0"
+
+examples:
+  - id: "bp-001"
+    description: "Identifies error handling for invalid command IDs in command router"
+    inputs:
+      message: "What error handling exists in the command router for invalid command IDs?"
+    reference_outputs:
+      contains_any:
+        - "Command_Id_Not_Registered"
+        - "not registered"
+        - "not found"
+        - "event"
+        - "error"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies the error event for unregistered commands"
+          key: "error_event"
+          keywords: ["Command_Id_Not_Registered", "not_registered", "event", "error"]
+          weight: 0.6
+        - criterion: "Explains what happens when an invalid ID arrives"
+          key: "error_handling"
+          keywords: ["reject", "drop", "forward", "not found", "invalid", "unregistered"]
+          weight: 0.4
+    metadata:
+      category: "bug_pattern_search"
+      priority: "p0"
+
+  - id: "bp-002"
+    description: "Identifies armed state check in command protector"
+    inputs:
+      message: "How does the command protector decide whether to allow or reject a command?"
+    reference_outputs:
+      contains_any:
+        - "armed"
+        - "protected command"
+        - "protect"
+        - "reject"
+        - "allow"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Describes the armed/disarmed state check"
+          key: "armed_state"
+          keywords: ["armed", "disarmed", "state", "arm"]
+          weight: 0.5
+        - criterion: "Describes protected vs unprotected command handling"
+          key: "command_filtering"
+          keywords: ["protected", "reject", "allow", "block", "forward", "pass"]
+          weight: 0.5
+    metadata:
+      category: "bug_pattern_search"
+      priority: "p0"
+
+  - id: "bp-003"
+    description: "Identifies event limiter counter and persistence behavior"
+    inputs:
+      message: "What are the rules for when the event limiter blocks vs forwards events?"
+    reference_outputs:
+      contains_any:
+        - "persistence"
+        - "counter"
+        - "limit"
+        - "block"
+        - "forward"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Explains the counting/persistence mechanism"
+          key: "counter_mechanism"
+          keywords: ["counter", "persistence", "count", "threshold", "limit", "number"]
+          weight: 0.5
+        - criterion: "Explains enable/disable state per event"
+          key: "enable_state"
+          keywords: ["enable", "disable", "enabled", "disabled", "state", "forward", "block"]
+          weight: 0.5
+    metadata:
+      category: "bug_pattern_search"
+      priority: "p1"
+
+  - id: "bp-004"
+    description: "Identifies potential race conditions in queue access"
+    inputs:
+      message: "Are there any concurrency safeguards in the queue implementations to prevent race conditions?"
+    reference_outputs:
+      contains_any:
+        - "protected"
+        - "mutual exclusion"
+        - "concurrent"
+        - "thread-safe"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies protected types as the concurrency mechanism"
+          key: "protected_types"
+          keywords: ["protected", "Protected_Queue", "mutual exclusion"]
+          weight: 0.6
+        - criterion: "Explains what the safeguard prevents"
+          key: "race_prevention"
+          keywords: ["race", "concurrent", "thread", "safe", "access", "shared"]
+          weight: 0.4
+    metadata:
+      category: "bug_pattern_search"
+      priority: "p0"
+
+  - id: "bp-005"
+    description: "Identifies boundary checks in packet buffer handling"
+    inputs:
+      message: "What happens if a packet exceeds the maximum buffer size in Packet_Types?"
+    reference_outputs:
+      contains_any:
+        - "buffer"
+        - "length"
+        - "range"
+        - "constraint"
+        - "overflow"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies the buffer size constraint"
+          key: "size_constraint"
+          keywords: ["Buffer_Length", "buffer", "max", "size", "range", "constraint"]
+          weight: 0.6
+        - criterion: "Describes what happens at boundaries"
+          key: "boundary_behavior"
+          keywords: ["constraint", "exception", "range", "check", "overflow", "Constraint_Error"]
+          weight: 0.4
+    metadata:
+      category: "bug_pattern_search"
+      priority: "p1"

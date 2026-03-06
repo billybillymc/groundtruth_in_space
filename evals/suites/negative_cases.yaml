@@ -1,0 +1,106 @@
+dataset_name: "adamant-negative-cases"
+description: "Tests that the system handles unanswerable, off-topic, and ambiguous queries gracefully"
+version: "1.0"
+
+examples:
+  # ── Unanswerable: code that doesn't exist ─────────────────────────────────
+  - id: "neg-001"
+    description: "Asks about a component that does not exist in Adamant"
+    inputs:
+      message: "How does the Kubernetes deployment controller work in Adamant?"
+    reference_outputs:
+      expects_refusal: true
+      does_not_contain:
+        - "kubernetes"
+        - "deployment controller"
+        - "container"
+        - "pod"
+      max_latency_s: 5
+    metadata:
+      category: "negative_cases"
+      priority: "p0"
+
+  - id: "neg-002"
+    description: "Asks about a programming language not used in Adamant"
+    inputs:
+      message: "Show me the Python unit tests for the command router"
+    reference_outputs:
+      expects_refusal: true
+      does_not_contain:
+        - "import pytest"
+        - "def test_"
+        - "unittest"
+      max_latency_s: 5
+    metadata:
+      category: "negative_cases"
+      priority: "p0"
+
+  - id: "neg-003"
+    description: "Asks about a non-existent database layer"
+    inputs:
+      message: "What SQL database does Adamant use for persistent storage?"
+    reference_outputs:
+      expects_refusal: true
+      does_not_contain:
+        - "SQL"
+        - "PostgreSQL"
+        - "MySQL"
+        - "sqlite"
+      max_latency_s: 5
+    metadata:
+      category: "negative_cases"
+      priority: "p0"
+
+  - id: "neg-004"
+    description: "Asks about a non-existent REST API"
+    inputs:
+      message: "What REST API endpoints does Adamant expose for telemetry data?"
+    reference_outputs:
+      expects_refusal: true
+      does_not_contain:
+        - "GET /api"
+        - "POST /api"
+        - "REST endpoint"
+      max_latency_s: 5
+    metadata:
+      category: "negative_cases"
+      priority: "p1"
+
+  # ── Off-topic queries ─────────────────────────────────────────────────────
+  - id: "neg-005"
+    description: "Completely off-topic question unrelated to code"
+    inputs:
+      message: "What is the recipe for chocolate cake?"
+    reference_outputs:
+      expects_refusal: true
+      does_not_contain:
+        - "flour"
+        - "sugar"
+        - "bake"
+        - "oven"
+      max_latency_s: 5
+    metadata:
+      category: "negative_cases"
+      priority: "p1"
+
+  - id: "neg-006"
+    description: "Asks about a different space software framework"
+    inputs:
+      message: "How does cFS handle message routing compared to Adamant?"
+    reference_outputs:
+      contains_any:
+        - "adamant"
+        - "command"
+        - "router"
+        - "connector"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Answers about Adamant even if it can't compare to cFS"
+          key: "adamant_focus"
+          keywords: ["adamant", "command", "router", "connector", "component"]
+          weight: 1.0
+    metadata:
+      category: "negative_cases"
+      priority: "p1"

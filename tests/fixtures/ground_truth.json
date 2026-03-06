@@ -1,0 +1,40 @@
+[
+  {
+    "query": "What is the base component type in the Adamant framework?",
+    "expected_files": ["adamant/src/core/component/component.ads"],
+    "expected_line_ranges": [[6, 12]],
+    "notes": "Core_Instance abstract tagged type defined at line 11-12"
+  },
+  {
+    "query": "How does the CCSDS command depacketizer validate incoming packets?",
+    "expected_files": [
+      "adamant/src/components/ccsds_command_depacketizer/component-ccsds_command_depacketizer-implementation.adb"
+    ],
+    "expected_line_ranges": [[47, 141]],
+    "notes": "Validates checksum, packet type, secondary header, packet size, buffer size"
+  },
+  {
+    "query": "What are the basic byte types defined in the Adamant framework?",
+    "expected_files": ["adamant/src/types/basic_types/basic_types.ads"],
+    "expected_line_ranges": [[11, 52]],
+    "notes": "Byte, Byte_Array, Byte_Array_Index, Volatile_Byte_Array"
+  },
+  {
+    "query": "What events can the CCSDS command depacketizer raise?",
+    "expected_files": [
+      "adamant/src/components/ccsds_command_depacketizer/ccsds_command_depacketizer.events.yaml"
+    ],
+    "expected_line_ranges": [[1, 23]],
+    "notes": "Invalid_Packet_Checksum, Invalid_Packet_Type, Packet_Too_Small, etc."
+  },
+  {
+    "query": "What data structures are available in the Adamant framework?",
+    "expected_files": [
+      "adamant/src/data_structures/binary_tree/binary_tree.ads",
+      "adamant/src/data_structures/circular_buffer/circular_buffer.ads",
+      "adamant/src/data_structures/queue/queue.ads"
+    ],
+    "expected_line_ranges": [],
+    "notes": "Should reference multiple data structure specs; any 3 of the available data structures suffices"
+  }
+]

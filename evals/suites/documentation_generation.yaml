@@ -1,0 +1,145 @@
+dataset_name: "adamant-documentation-generation"
+description: "Validates the agent can generate accurate descriptions of component interfaces"
+version: "1.0"
+
+examples:
+  - id: "dg-001"
+    description: "Describes the tick divider component interface"
+    inputs:
+      message: "Describe the purpose and interface of the tick divider component"
+    reference_outputs:
+      contains_any:
+        - "tick"
+        - "divid"
+        - "subrate"
+        - "rate"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Describes the component's purpose"
+          key: "purpose"
+          keywords: ["tick", "divide", "rate", "subrate", "periodic"]
+          weight: 0.4
+        - criterion: "Describes input connector"
+          key: "input_interface"
+          keywords: ["Tick_Recv", "tick_recv", "input", "receive", "incoming"]
+          weight: 0.3
+        - criterion: "Describes output connector"
+          key: "output_interface"
+          keywords: ["Tick_T_Send", "tick_t_send", "output", "send", "arrayed", "array"]
+          weight: 0.3
+    metadata:
+      category: "documentation_generation"
+      priority: "p0"
+
+  - id: "dg-004"
+    description: "Documents the event filter component"
+    inputs:
+      message: "Describe the purpose and interface of the event filter component"
+    reference_outputs:
+      contains_any:
+        - "event"
+        - "filter"
+        - "Event_Filter"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Describes the filtering purpose"
+          key: "purpose"
+          keywords: ["filter", "event", "allow", "block", "disable", "enable"]
+          weight: 0.4
+        - criterion: "Describes input/output connectors"
+          key: "interface"
+          keywords: ["connector", "input", "output", "receive", "send", "forward"]
+          weight: 0.3
+        - criterion: "Mentions per-event-ID filtering"
+          key: "per_event"
+          keywords: ["Event_Id", "event_id", "individual", "specific", "each"]
+          weight: 0.3
+    metadata:
+      category: "documentation_generation"
+      priority: "p0"
+
+  - id: "dg-005"
+    description: "Documents the parameter store component"
+    inputs:
+      message: "What does the parameter store component do and what is its interface?"
+    reference_outputs:
+      contains_any:
+        - "parameter"
+        - "store"
+        - "configuration"
+        - "value"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Describes parameter storage purpose"
+          key: "purpose"
+          keywords: ["parameter", "store", "configuration", "value", "manage"]
+          weight: 0.5
+        - criterion: "Describes get/set operations"
+          key: "operations"
+          keywords: ["get", "set", "fetch", "update", "retrieve", "command"]
+          weight: 0.5
+    metadata:
+      category: "documentation_generation"
+      priority: "p1"
+
+  - id: "dg-002"
+    description: "Documents the CCSDS packetizer purpose"
+    inputs:
+      message: "How does the CCSDS packetizer create telemetry packets?"
+    reference_outputs:
+      contains_any:
+        - "CCSDS"
+        - "ccsds"
+        - "telemetry"
+        - "packet"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Explains conversion from Adamant to CCSDS packets"
+          key: "conversion"
+          keywords: ["convert", "Adamant", "CCSDS", "telemetry", "transform"]
+          weight: 0.4
+        - criterion: "Mentions secondary header or timestamp"
+          key: "header"
+          keywords: ["secondary header", "timestamp", "header", "time"]
+          weight: 0.3
+        - criterion: "Mentions CRC or checksum"
+          key: "integrity"
+          keywords: ["CRC", "crc", "checksum", "CRC-CCITT", "integrity"]
+          weight: 0.3
+    metadata:
+      category: "documentation_generation"
+      priority: "p0"
+
+  - id: "dg-003"
+    description: "Documents the command sequencer capabilities"
+    inputs:
+      message: "How does the command sequencer execute stored command sequences?"
+    reference_outputs:
+      contains_any:
+        - "sequence"
+        - "command"
+        - "engine"
+        - "execute"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Explains sequence execution"
+          key: "execution"
+          keywords: ["execute", "sequence", "engine", "interpret", "run"]
+          weight: 0.5
+        - criterion: "Mentions LASEL or SEQ tool"
+          key: "lasel"
+          keywords: ["LASEL", "lasel", "SEQ", "compiled", "language"]
+          weight: 0.5
+    metadata:
+      category: "documentation_generation"
+      priority: "p0"

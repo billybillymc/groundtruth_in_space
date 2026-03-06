@@ -1,0 +1,137 @@
+dataset_name: "adamant-multi-hop-reasoning"
+description: "Tests questions requiring synthesis across multiple components or files"
+version: "1.0"
+
+examples:
+  - id: "mh-001"
+    description: "Trace command flow from reception to execution"
+    inputs:
+      message: "Trace the lifecycle of a command from when it arrives at the command router to when it gets executed by a component. What components are involved?"
+    reference_outputs:
+      contains_any:
+        - "command router"
+        - "Command_Router"
+      contains:
+        - "command"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies the command router as entry point"
+          key: "router_entry"
+          keywords: ["Command_Router", "command router", "route", "dispatch"]
+          weight: 0.3
+        - criterion: "Describes the routing/dispatch mechanism"
+          key: "dispatch"
+          keywords: ["table", "lookup", "dispatch", "forward", "connector"]
+          weight: 0.4
+        - criterion: "Mentions downstream component execution"
+          key: "execution"
+          keywords: ["execute", "handler", "component", "receive", "forward"]
+          weight: 0.3
+    metadata:
+      category: "multi_hop"
+      priority: "p0"
+
+  - id: "mh-002"
+    description: "Cross-component event flow from generation to logging"
+    inputs:
+      message: "How does an event get from the component that generates it to the event text logger? What happens at each step?"
+    reference_outputs:
+      contains_any:
+        - "Event_Text_Logger"
+        - "event_text_logger"
+        - "event"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies event generation"
+          key: "generation"
+          keywords: ["generate", "emit", "send", "connector", "event"]
+          weight: 0.3
+        - criterion: "Mentions event filtering or limiting"
+          key: "filtering"
+          keywords: ["Event_Filter", "Event_Limiter", "filter", "limiter", "limit"]
+          weight: 0.3
+        - criterion: "Describes the text logger endpoint"
+          key: "logger"
+          keywords: ["Event_Text_Logger", "text", "logger", "log", "format"]
+          weight: 0.4
+    metadata:
+      category: "multi_hop"
+      priority: "p0"
+
+  - id: "mh-003"
+    description: "Relationship between tick system and component scheduling"
+    inputs:
+      message: "How do the tick divider and tick components work together to schedule different components at different rates?"
+    reference_outputs:
+      contains_any:
+        - "tick"
+        - "divider"
+        - "rate"
+        - "divisor"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Explains the tick source / base rate"
+          key: "tick_source"
+          keywords: ["tick", "base", "periodic", "schedule", "rate"]
+          weight: 0.3
+        - criterion: "Explains the divider mechanism"
+          key: "divider"
+          keywords: ["divider", "divisor", "subrate", "divide", "frequency"]
+          weight: 0.4
+        - criterion: "Connects to component scheduling"
+          key: "scheduling"
+          keywords: ["component", "task", "schedule", "connector", "output"]
+          weight: 0.3
+    metadata:
+      category: "multi_hop"
+      priority: "p0"
+
+  - id: "mh-004"
+    description: "Compare protected type patterns across different components"
+    inputs:
+      message: "Which components use Ada protected types, and what is the common pattern for how they use them?"
+    reference_outputs:
+      contains_any:
+        - "protected"
+        - "Protected_Queue"
+        - "Protected_Packet_Array"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Names multiple components using protected types"
+          key: "components"
+          keywords: ["queue", "packetizer", "event", "Protected_Queue", "Protected_Packet_Array"]
+          weight: 0.5
+        - criterion: "Identifies the common pattern (mutual exclusion / thread safety)"
+          key: "pattern"
+          keywords: ["mutual exclusion", "concurrent", "thread", "safe", "protect"]
+          weight: 0.5
+    metadata:
+      category: "multi_hop"
+      priority: "p0"
+
+  - id: "mh-005"
+    description: "Impact chain: changing a core type affects multiple layers"
+    inputs:
+      message: "If the Packet_Types package changed its buffer definition, what chain of components would be affected and why?"
+    reference_outputs:
+      contains_any:
+        - "Packet_Types"
+        - "packet_types"
+        - "buffer"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies Packet_Types as the source of change"
+          key: "source"
+          keywords: ["Packet_Types", "buffer", "packet_buffer"]
+          weight: 0.3
+        - criterion: "Names downstream components"
+          key: "downstream"
+          keywords: ["packetizer", "CCSDS", "ccsds", "event", "component"]
+          weight: 0.4
+        - criterion: "Explains the dependency chain"
+          key: "chain"
+          keywords: ["depend", "with", "import", "use", "reference", "affect"]
+          weight: 0.3
+    metadata:
+      category: "multi_hop"
+      priority: "p1"

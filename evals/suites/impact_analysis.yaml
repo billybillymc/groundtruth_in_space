@@ -1,0 +1,134 @@
+dataset_name: "adamant-impact-analysis"
+description: "Validates the agent can assess what would be affected by code changes"
+version: "1.0"
+
+examples:
+  - id: "ia-001"
+    description: "Assesses impact of changing Packet_Types buffer size"
+    inputs:
+      message: "What would be affected if the Packet_Types buffer size changed?"
+    reference_outputs:
+      contains_any:
+        - "Packet_Buffer"
+        - "packet_buffer"
+        - "buffer"
+        - "Configuration"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies buffer-related types that would change"
+          key: "buffer_types"
+          keywords: ["Packet_Buffer", "Buffer_Length", "buffer", "length", "size"]
+          weight: 0.5
+        - criterion: "Identifies downstream components affected"
+          key: "downstream"
+          keywords: ["packetizer", "component", "ccsds", "event"]
+          weight: 0.5
+    metadata:
+      category: "impact_analysis"
+      priority: "p0"
+
+  - id: "ia-004"
+    description: "Impact of changing connector interface"
+    inputs:
+      message: "What would happen if the Tick connector type definition was modified?"
+    reference_outputs:
+      contains_any:
+        - "tick"
+        - "Tick"
+        - "component"
+        - "divider"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies tick-consuming components"
+          key: "consumers"
+          keywords: ["tick divider", "Tick_Divider", "component", "periodic", "schedule"]
+          weight: 0.5
+        - criterion: "Explains the ripple effect"
+          key: "ripple"
+          keywords: ["affect", "change", "modify", "recompile", "dependent", "downstream"]
+          weight: 0.5
+    metadata:
+      category: "impact_analysis"
+      priority: "p1"
+
+  - id: "ia-005"
+    description: "Impact of removing a queue implementation"
+    inputs:
+      message: "If the priority queue implementation was removed, what components would break?"
+    reference_outputs:
+      contains_any:
+        - "priority"
+        - "queue"
+        - "component"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies the priority queue"
+          key: "queue_type"
+          keywords: ["Priority_Queue", "priority_queue", "priority", "queue"]
+          weight: 0.5
+        - criterion: "Identifies dependent components"
+          key: "dependents"
+          keywords: ["component", "task", "instantiat", "generic", "use"]
+          weight: 0.5
+    metadata:
+      category: "impact_analysis"
+      priority: "p1"
+
+  - id: "ia-002"
+    description: "Identifies components depending on Event_Types"
+    inputs:
+      message: "What components would be affected if Event_Types.Event_Id type definition changed?"
+    reference_outputs:
+      contains_any:
+        - "Event_Text_Logger"
+        - "Event_Filter"
+        - "Event_Limiter"
+        - "Event_Packetizer"
+        - "event"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Names event-processing components"
+          key: "event_components"
+          keywords: ["Event_Text_Logger", "Event_Filter", "Event_Limiter", "Event_Packetizer", "event"]
+          weight: 0.7
+        - criterion: "Explains how Event_Id is used"
+          key: "event_id_usage"
+          keywords: ["Event_Id", "event_id", "header", "identifier"]
+          weight: 0.3
+    metadata:
+      category: "impact_analysis"
+      priority: "p1"
+
+  - id: "ia-003"
+    description: "Assesses impact of changing command router max commands"
+    inputs:
+      message: "What are the configuration parameters for the command router?"
+    reference_outputs:
+      contains_any:
+        - "Max_Number_Of_Commands"
+        - "max"
+        - "number"
+        - "commands"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies the max commands parameter"
+          key: "max_commands"
+          keywords: ["Max_Number_Of_Commands", "max", "number", "commands"]
+          weight: 0.6
+        - criterion: "Explains what the parameter controls"
+          key: "param_effect"
+          keywords: ["table", "router", "unique", "register", "init"]
+          weight: 0.4
+    metadata:
+      category: "impact_analysis"
+      priority: "p1"

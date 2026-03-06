@@ -1,0 +1,139 @@
+dataset_name: "adamant-dependency-mapping"
+description: "Validates the agent can identify package dependencies and component interactions"
+version: "1.0"
+
+examples:
+  - id: "dm-001"
+    description: "Lists CCSDS packetizer package dependencies"
+    inputs:
+      message: "What packages does the CCSDS packetizer depend on?"
+    reference_outputs:
+      contains_any:
+        - "Ccsds_Primary_Header"
+        - "ccsds_primary_header"
+        - "Crc_16"
+        - "crc_16"
+        - "Packet_Types"
+        - "packet_types"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Lists CCSDS-related dependencies"
+          key: "ccsds_deps"
+          keywords: ["Ccsds", "ccsds", "Primary_Header", "primary_header"]
+          weight: 0.5
+        - criterion: "Lists utility dependencies like CRC or types"
+          key: "util_deps"
+          keywords: ["Crc", "crc", "Packet_Types", "packet_types", "Sys_Time"]
+          weight: 0.5
+    metadata:
+      category: "dependency_mapping"
+      priority: "p0"
+
+  - id: "dm-002"
+    description: "Identifies command sequencer component interactions"
+    inputs:
+      message: "What components does the command sequencer interact with?"
+    reference_outputs:
+      contains_any:
+        - "Tick"
+        - "Command"
+        - "Sequence"
+        - "command"
+        - "sequence"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies command-related interactions"
+          key: "command_interactions"
+          keywords: ["Command", "command", "Command_Response"]
+          weight: 0.5
+        - criterion: "Identifies sequence-related types"
+          key: "sequence_types"
+          keywords: ["Sequence", "sequence", "Seq", "LASEL"]
+          weight: 0.5
+    metadata:
+      category: "dependency_mapping"
+      priority: "p0"
+
+  - id: "dm-003"
+    description: "Identifies components depending on Event_Types"
+    inputs:
+      message: "What components depend on Event_Types?"
+    reference_outputs:
+      contains_any:
+        - "Event_Text_Logger"
+        - "event_text_logger"
+        - "Event_Filter"
+        - "event_filter"
+        - "Event_Limiter"
+        - "event_limiter"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Names at least one component using Event_Types"
+          key: "component_name"
+          keywords: ["Event_Text_Logger", "Event_Filter", "Event_Limiter", "event_text_logger", "event_filter"]
+          weight: 0.7
+        - criterion: "Explains how Event_Types is used"
+          key: "usage"
+          keywords: ["Event_Id", "event_id", "event", "type"]
+          weight: 0.3
+    metadata:
+      category: "dependency_mapping"
+      priority: "p1"
+
+  - id: "dm-004"
+    description: "Identifies packages used by the event packetizer"
+    inputs:
+      message: "What packages does the event packetizer depend on?"
+    reference_outputs:
+      contains_any:
+        - "Packet_Types"
+        - "Event"
+        - "event"
+        - "Sys_Time"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Lists event-related dependencies"
+          key: "event_deps"
+          keywords: ["Event_Types", "Event", "event", "Packet_Types"]
+          weight: 0.5
+        - criterion: "Lists system dependencies"
+          key: "sys_deps"
+          keywords: ["Sys_Time", "sys_time", "Packet_Types", "packet_types"]
+          weight: 0.5
+    metadata:
+      category: "dependency_mapping"
+      priority: "p1"
+
+  - id: "dm-005"
+    description: "Maps the command protector's dependencies"
+    inputs:
+      message: "What packages and types does the command protector use?"
+    reference_outputs:
+      contains_any:
+        - "Command"
+        - "command"
+        - "protected"
+        - "arm"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies command-related dependencies"
+          key: "cmd_deps"
+          keywords: ["Command_Types", "Command_Header", "command", "Command"]
+          weight: 0.5
+        - criterion: "Identifies protector-specific types"
+          key: "protector_types"
+          keywords: ["arm", "Armed", "protected", "Protected_Command"]
+          weight: 0.5
+    metadata:
+      category: "dependency_mapping"
+      priority: "p1"

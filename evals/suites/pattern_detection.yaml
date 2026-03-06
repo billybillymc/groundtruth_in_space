@@ -1,0 +1,135 @@
+dataset_name: "adamant-pattern-detection"
+description: "Validates the agent can identify design patterns in the Ada codebase"
+version: "1.0"
+
+examples:
+  - id: "pd-001"
+    description: "Identifies protected types in queue implementations"
+    inputs:
+      message: "What protected types are used in the queue implementation?"
+    reference_outputs:
+      contains_any:
+        - "Protected_Queue"
+        - "protected_queue"
+        - "Protected_Priority_Queue"
+        - "protected"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Names the protected queue types"
+          key: "protected_types"
+          keywords: ["Protected_Queue", "Protected_Priority_Queue", "protected"]
+          weight: 0.6
+        - criterion: "Explains the mutual exclusion pattern"
+          key: "mutex_pattern"
+          keywords: ["mutual exclusion", "protected", "concurrent", "thread-safe", "safe"]
+          weight: 0.4
+    metadata:
+      category: "pattern_detection"
+      priority: "p0"
+
+  - id: "pd-002"
+    description: "Identifies the command router table lookup pattern"
+    inputs:
+      message: "How does the command router use a table to dispatch commands?"
+    reference_outputs:
+      contains_any:
+        - "table"
+        - "lookup"
+        - "router table"
+        - "command id"
+        - "Command_Id"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Describes the table-based dispatch pattern"
+          key: "table_dispatch"
+          keywords: ["table", "lookup", "dispatch", "route", "index"]
+          weight: 0.6
+        - criterion: "Mentions command ID to connector mapping"
+          key: "id_mapping"
+          keywords: ["Command_Id", "command id", "connector", "forward"]
+          weight: 0.4
+    metadata:
+      category: "pattern_detection"
+      priority: "p0"
+
+  - id: "pd-003"
+    description: "Identifies the tick divider divisor pattern"
+    inputs:
+      message: "How does the tick divider use divisors to create subrate ticks?"
+    reference_outputs:
+      contains_any:
+        - "divisor"
+        - "divid"
+        - "subrate"
+        - "rate"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Describes the divisor-based rate division"
+          key: "divisor_pattern"
+          keywords: ["divisor", "divide", "rate", "subrate", "frequency"]
+          weight: 0.6
+        - criterion: "Mentions the arrayed output connector"
+          key: "output_array"
+          keywords: ["array", "output", "connector", "Tick_T_Send", "index"]
+          weight: 0.4
+    metadata:
+      category: "pattern_detection"
+      priority: "p1"
+
+  - id: "pd-004"
+    description: "Identifies the generic instantiation pattern"
+    inputs:
+      message: "How does Adamant use Ada generics to create reusable components?"
+    reference_outputs:
+      contains_any:
+        - "generic"
+        - "instantiat"
+        - "template"
+        - "reusable"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies the Ada generic mechanism"
+          key: "generic_mechanism"
+          keywords: ["generic", "instantiat", "formal", "parameter", "template"]
+          weight: 0.6
+        - criterion: "Gives an example of a generic component"
+          key: "example"
+          keywords: ["queue", "database", "component", "package", "type"]
+          weight: 0.4
+    metadata:
+      category: "pattern_detection"
+      priority: "p0"
+
+  - id: "pd-005"
+    description: "Identifies the component initialization pattern"
+    inputs:
+      message: "What is the common initialization pattern used across Adamant components?"
+    reference_outputs:
+      contains_any:
+        - "Init"
+        - "init"
+        - "initialize"
+        - "procedure"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies the Init procedure pattern"
+          key: "init_pattern"
+          keywords: ["Init", "init", "procedure", "initialize"]
+          weight: 0.6
+        - criterion: "Describes what initialization sets up"
+          key: "init_setup"
+          keywords: ["connector", "table", "component", "configure", "parameter"]
+          weight: 0.4
+    metadata:
+      category: "pattern_detection"
+      priority: "p1"

@@ -1,0 +1,137 @@
+dataset_name: "adamant-translation-hints"
+description: "Validates the agent can identify Ada-specific constructs relevant for porting"
+version: "1.0"
+
+examples:
+  - id: "th-001"
+    description: "Identifies protected types in event packetizer needing translation"
+    inputs:
+      message: "What protected types does the event packetizer use and what do they provide?"
+    reference_outputs:
+      contains_any:
+        - "Protected_Packet_Array"
+        - "protected"
+        - "mutual exclusion"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies the Ada protected type construct"
+          key: "protected_type"
+          keywords: ["protected", "Protected_Packet_Array", "mutual exclusion"]
+          weight: 0.6
+        - criterion: "Explains what concurrency guarantee it provides"
+          key: "concurrency"
+          keywords: ["concurrent", "thread", "safe", "mutual", "exclusion", "access"]
+          weight: 0.4
+    metadata:
+      category: "translation_hints"
+      priority: "p1"
+
+  - id: "th-004"
+    description: "Identifies Ada tasking constructs needing translation"
+    inputs:
+      message: "What Ada tasking constructs in Adamant would need special handling when porting to C++ or Rust?"
+    reference_outputs:
+      contains_any:
+        - "task"
+        - "protected"
+        - "Ravenscar"
+        - "entry"
+        - "pragma"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies Ada-specific tasking features"
+          key: "tasking_features"
+          keywords: ["task", "protected", "entry", "Ravenscar", "pragma", "priority"]
+          weight: 0.6
+        - criterion: "Suggests translation equivalents"
+          key: "equivalents"
+          keywords: ["mutex", "thread", "lock", "async", "concurrent", "channel"]
+          weight: 0.4
+    metadata:
+      category: "translation_hints"
+      priority: "p1"
+
+  - id: "th-005"
+    description: "Identifies Ada representation clauses needing translation"
+    inputs:
+      message: "What Ada-specific type representation features are used in Adamant's packet definitions?"
+    reference_outputs:
+      contains_any:
+        - "representation"
+        - "record"
+        - "bit"
+        - "byte"
+        - "pragma"
+        - "for"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies representation clauses or packing"
+          key: "repr"
+          keywords: ["representation", "pack", "pragma", "record", "bit", "layout"]
+          weight: 0.6
+        - criterion: "Connects to packet/telemetry data"
+          key: "packet_data"
+          keywords: ["packet", "CCSDS", "header", "telemetry", "byte"]
+          weight: 0.4
+    metadata:
+      category: "translation_hints"
+      priority: "p1"
+
+  - id: "th-002"
+    description: "Identifies Ada range types and constraints in Packet_Types"
+    inputs:
+      message: "What types and subtypes are defined in the Packet_Types package?"
+    reference_outputs:
+      contains_any:
+        - "Packet_Buffer"
+        - "packet_buffer"
+        - "Natural"
+        - "range"
+        - "subtype"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Identifies buffer types"
+          key: "buffer_types"
+          keywords: ["Packet_Buffer", "Buffer_Length", "buffer", "array"]
+          weight: 0.5
+        - criterion: "Mentions Ada type system features"
+          key: "type_system"
+          keywords: ["range", "subtype", "type", "Natural", "index"]
+          weight: 0.5
+    metadata:
+      category: "translation_hints"
+      priority: "p1"
+
+  - id: "th-003"
+    description: "Identifies generic instantiation pattern in variable database"
+    inputs:
+      message: "What is the product database and how does it manage data products?"
+    reference_outputs:
+      contains_any:
+        - "database"
+        - "data product"
+        - "product"
+        - "store"
+      does_not_contain:
+        - "cannot find"
+      max_latency_s: 5
+      rubric:
+        - criterion: "Explains the database storage pattern"
+          key: "storage"
+          keywords: ["database", "store", "fetch", "update", "product"]
+          weight: 0.5
+        - criterion: "Mentions ID-based access"
+          key: "id_access"
+          keywords: ["id", "identifier", "index", "lookup", "key"]
+          weight: 0.5
+    metadata:
+      category: "translation_hints"
+      priority: "p1"
