@@ -28,11 +28,11 @@ LANGSMITH_API_KEY: str = os.getenv("LANGSMITH_API_KEY", "")
 COHERE_API_KEY: str = os.getenv("COHERE_API_KEY", "")
 
 # Pinecone
-PINECONE_INDEX_NAME: str = os.getenv("PINECONE_INDEX_NAME", "legacylens")
+PINECONE_INDEX_NAME: str = os.getenv("PINECONE_INDEX_NAME", "groundtruth")
 
 # LangSmith
 LANGCHAIN_TRACING_V2: str = os.getenv("LANGCHAIN_TRACING_V2", "true")
-LANGCHAIN_PROJECT: str = os.getenv("LANGCHAIN_PROJECT", "LegacyLens")
+LANGCHAIN_PROJECT: str = os.getenv("LANGCHAIN_PROJECT", "groundtruth")
 
 # Model settings
 EMBEDDING_MODEL: str = "text-embedding-3-small"
@@ -66,21 +66,21 @@ SKIP_DIRS: set = {"gen", "doc"}
 CODEBASES = {
     "adamant": {
         "src_path": ADAMANT_SRC_PATH,
-        "index": "legacylens",
+        "index": "groundtruth",
         "language": "ada",
         "extensions": {".ads", ".adb", ".yaml"},
         "skip_dirs": {"gen", "doc"},
     },
     "cfs": {
         "src_path": CFS_SRC_PATH,
-        "index": "legacylens-cfs",
+        "index": "groundtruth-cfs",
         "language": "c",
         "extensions": {".c", ".h"},
         "skip_dirs": {"build", "unit-test-coverage", ".git", "ut-stubs", "ut_stubs"},
     },
     "cubedos": {
         "src_path": CUBEDOS_SRC_PATH,
-        "index": "legacylens-cubedos",
+        "index": "groundtruth-cubedos",
         "language": "ada",
         "extensions": {".ads", ".adb"},
         "skip_dirs": {"doc", ".git"},

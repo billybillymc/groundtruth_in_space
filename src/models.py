@@ -1,4 +1,4 @@
-"""Data models for LegacyLens."""
+"""Data models for groundtruth."""
 
 from dataclasses import dataclass, field
 from typing import List

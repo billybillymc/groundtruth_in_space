@@ -1,4 +1,4 @@
-"""FastAPI WebSocket server for LegacyLens web terminal."""
+"""FastAPI WebSocket server for groundtruth web terminal."""
 
 import asyncio
 import logging

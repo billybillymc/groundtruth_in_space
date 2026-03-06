@@ -1,6 +1,9 @@
-# LegacyLens
+# GroundTruth
 
-LegacyLens is a RAG-based (Retrieval-Augmented Generation) tool for exploring and understanding legacy flight software codebases. It ingests source code, chunks and embeds it into a vector store, and provides a conversational interface for asking questions about the code.
+**Author:** William Gardner McIntyre
+**License:** MIT
+
+GroundTruth is a RAG-based (Retrieval-Augmented Generation) tool for exploring and understanding legacy flight software codebases. It ingests source code, chunks and embeds it into a vector store, and provides a conversational interface for asking questions about the code.
 
 Currently supports three open-source flight software frameworks:
 
@@ -24,8 +27,8 @@ Currently supports three open-source flight software frameworks:
 Clone with submodules to pull in the source codebases:
 
 ```
-git clone --recurse-submodules https://github.com/<your-org>/legacylens.git
-cd legacylens
+git clone --recurse-submodules https://github.com/billybillymc/groundtruth_in_space.git
+cd groundtruth_in_space
 ```
 
 If you already cloned without submodules:
@@ -54,7 +57,7 @@ Required variables:
 |---|---|
 | `OPENAI_API_KEY` | Embeddings (text-embedding-3-small) |
 | `PINECONE_API_KEY` | Vector store |
-| `PINECONE_INDEX_NAME` | Pinecone index name (default: `legacylens`) |
+| `PINECONE_INDEX_NAME` | Pinecone index name (default: `groundtruth`) |
 | `GOOGLE_API_KEY` | Gemini LLM for answer generation |
 | `COHERE_API_KEY` | (Optional) Reranking |
 | `LANGSMITH_API_KEY` | (Optional) LangSmith tracing |
@@ -107,8 +110,8 @@ Then open `http://localhost:8000` in your browser. The frontend files in `fronte
 ### Docker
 
 ```
-docker build -t legacylens .
-docker run -p 8000:8000 --env-file .env legacylens
+docker build -t groundtruth .
+docker run -p 8000:8000 --env-file .env groundtruth
 ```
 
 ## Project structure
@@ -164,7 +167,3 @@ Eval suites are defined as YAML files in `evals/suites/`. Results are written to
 ```
 pytest
 ```
-
-## License
-
-See LICENSE file.
